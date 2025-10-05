@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <title>WANDERING OLDMAN AIS — HLS</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no">
+
+  <!-- Clappr (รุ่นใหม่) -->
+  <script src="https://cdn.jsdelivr.net/npm/@clappr/player@0.11.14/dist/clappr.min.js"></script>
+  <!-- เลือกความละเอียด -->
+  <script src="https://cdn.jsdelivr.net/npm/level-selector@latest/dist/level-selector.min.js"></script>
+  <!-- เสริม: PiP / PlaybackRate / Chromecast ถ้าต้องการ -->
+  <script src="https://cdn.jsdelivr.net/npm/clappr-pip@latest/dist/clappr-pip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/clappr-playback-rate-plugin@latest/dist/clappr-playback-rate-plugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/clappr-chromecast-plugin@latest/dist/clappr-chromecast-plugin.min.js"></script>
+
+  <style>
+    html,body {height:100%;margin:0;background:#000}
+    #player {position:fixed;inset:0}
+    .corner {position:absolute;bottom:10px;right:20px;color:#ff0;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,.7)}
+  </style>
+</head>
+<body>
+  <div id="player"></div>
+  <script>
+    const HLS_URL = 'https://udzaa2238.github.io/m3u8-system/23232_top-hub-premier-1.m3u8';
+
+    const player = new Clappr.Player({
+      parentId: '#player',
+      source: HLS_URL,
+      autoPlay: true,
+      muted: true,      // ช่วยให้ autoplay ผ่านบนมือถือ
+      width: '100%', height: '100%',
+      mediacontrol: { seekbar: '#23ade5', buttons: '#ffffff' },
+      playback: {
+        // ปรับ hls.js ภายใน Clappr ให้เสถียรขึ้น
+        hlsjsConfig: {
+          lowLatencyMode: false,
+          liveSyncDurationCount: 3,
+          maxBufferLength: 30,
+          backBufferLength: 60,
+          // ถ้าปลายทางต้องการ header พิเศษ ใส่ได้ที่นี่
+          // xhrSetup: (xhr, url) => { xhr.setRequestHeader('Referer', location.origin) }
+        }
+      },
+      plugins: [LevelSelector /* , ClapprPip, PlaybackRatePlugin, ChromecastPlugin */],
+      levelSelectorConfig: {
+        title: 'Quality',
+        labelCallback: (lvl, customLabel) => customLabel || (lvl && lvl.height ? `${lvl.height}p` : 'Auto')
+      },
+      events: {
+        onReady() { const p = this.getPlugin('click_to_pause'); p && p.disable(); },
+        onError(e) { console.error('Clappr error:', e); alert('เล่นสตรีมไม่ได้:.ให้กดรีเฟรช 1 ครั้ง'); }
+      },
+      playInline: true,
+      crossOrigin: 'anonymous',
+    });
+  </script>
+
+  <span class="corner"><em>ผู้เฒ่าพเนจร</em></span>
+</body>
+</html>
