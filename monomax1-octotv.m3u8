@@ -1,0 +1,4 @@
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=auto
+http://s.octotv.live:80/play/live.php?mac=00:1A:79:00:07:33&stream=1660493&extension=m3u8&play_token=
